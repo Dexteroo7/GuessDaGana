@@ -51,25 +51,29 @@ public class OnePlayer extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
+        long temp = stopwatch.getBase();
 		switch(v.getId()){
 		
 		case R.id.iVmusic:
 			if(oursong.isPlaying()){
-			oursong.pause();
-			stopwatch.stop();
+
+                oursong.pause();
+                stopwatch.stop();
+                temp = SystemClock.elapsedRealtime() - stopwatch.getBase();
 			}else{
+
+                stopwatch.setBase(temp);
 				oursong.start();
-				stopwatch.setBase(SystemClock.elapsedRealtime());
 				stopwatch.start();
-				
 			}
 			break;
 			
 		case R.id.bsubmit:
-			
+
+            oursong.stop();
+            stopwatch.stop();
 			break;
-		
 		}
 		
 	}
