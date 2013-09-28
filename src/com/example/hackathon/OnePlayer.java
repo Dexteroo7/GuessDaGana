@@ -21,8 +21,9 @@ public class OnePlayer extends Activity implements OnClickListener{
 	MediaPlayer oursong;
 	TextView tvtimer;
 	Chronometer stopwatch;
-	int counter=0;
-	int countup =0;
+	int counter = 0;
+	int countup = 0;
+    long temp = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -48,23 +49,22 @@ public class OnePlayer extends Activity implements OnClickListener{
 		bsubmit.setOnClickListener(this);
 		ivsong.setOnClickListener(this);
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
-        long temp = stopwatch.getBase();
 		switch(v.getId()){
 		
 		case R.id.iVmusic:
 			if(oursong.isPlaying()){
 
                 oursong.pause();
+                temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
                 stopwatch.stop();
-                temp = SystemClock.elapsedRealtime() - stopwatch.getBase();
 			}else{
 
-                stopwatch.setBase(temp);
 				oursong.start();
+                stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
 				stopwatch.start();
 			}
 			break;
@@ -72,12 +72,41 @@ public class OnePlayer extends Activity implements OnClickListener{
 		case R.id.bsubmit:
 
             oursong.stop();
+            stopwatch.setBase(SystemClock.elapsedRealtime());
+            temp = 0;
             stopwatch.stop();
 			break;
 		}
-		
 	}
-	
-	
+
+    @Override
+    public void onDestroy() {
+
+        stopwatch.stop();
+        oursong.stop();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+
+        if(temp > 0 || oursong.isPlaying()) {
+            oursong.pause();
+            temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
+            stopwatch.stop();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+
+        if(temp > 0) {
+            oursong.start();
+            stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
+            stopwatch.start();
+        }
+        super.onResume();
+    }
 
 }
