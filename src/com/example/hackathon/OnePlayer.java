@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,16 +21,24 @@ public class OnePlayer extends Activity implements OnClickListener {
 	EditText etmovie, ettrack;
 	ImageView ivsong;
 	MediaPlayer oursong;
-	TextView tvtimer;
+	TextView tvtimer, tvcurrentscore;
 	Chronometer stopwatch;
+	String[] songsrc = { "nothing", "R.drawable.dabbang2_daggabazz_re",
+			"R.drawable.idiots3_givemesomesunshine",
+			"R.drawable.apgk_tujaanena", "R.drawable.jabwemet_tumsehi",
+			"R.drawable.jannat2_tuhimera" };
 
-	String[] movieanswer = new String[10];
-	String[] keywordsanswer = new String[10];
+	String[] movieanswer = { "none", "Dabbang 2", "3 Idiots",
+			"Ajab Prem Ki Gajab Kahani", "Jab We Met", "Jannat 2" };
+
+	String[] keywordsanswer = { "none", "Daggabazz Re",
+			"Give Me Some Sunshine", "Tu Jaane Na", "Tum Se Hi", "Tu Hi Mera" };
 
 	int counter = 0;
 	int countup = 0;
 	long temp = 0;
-int pscore = 0;
+	int pscore = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -42,12 +51,11 @@ int pscore = 0;
 		ettrack = (EditText) findViewById(R.id.ettrack);
 		tvtimer = (TextView) findViewById(R.id.tvtimer);
 		stopwatch = (Chronometer) findViewById(R.id.chrono1);
-		movieanswer[1] = "Dabbang2";
-		keywordsanswer[1] = "Daggabaaz Re";
-
+		tvcurrentscore = (TextView) findViewById(R.id.tvcurrentscore);
 		stopwatch.setOnChronometerTickListener(new OnChronometerTickListener() {
 			@Override
 			public void onChronometerTick(Chronometer arg0) {
+				Log.d("hell", "Ticking");
 
 				countup = (int) ((SystemClock.elapsedRealtime() - arg0
 						.getBase()) / 1000);
@@ -64,42 +72,48 @@ int pscore = 0;
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
-		switch(v.getId()){
-		
-		case R.id.iVmusic:
-			if(oursong.isPlaying()){
+		switch (v.getId()) {
 
-                oursong.pause();
-                temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
-                stopwatch.stop();
-                counter = counter + countup;
-			}else
+		case R.id.iVmusic:
+			if (oursong.isPlaying()) {
+
+				oursong.pause();
+				temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
+				stopwatch.stop();
+				stopwatch.stop();
+				counter = counter + countup;
+			} else {
 				oursong.start();
-                stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
+				stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
 				stopwatch.start();
-				
-			
+
+			}
 			break;
-			
+
 		case R.id.bsubmit:
-            stopwatch.setBase(SystemClock.elapsedRealtime());
-            temp = 0;
-            stopwatch.stop();
-            String tempmovie = etmovie.getText().toString();
-            String tempkeywords = etmovie.getText().toString();
-            if(tempmovie == movieanswer[1] && tempkeywords == keywordsanswer[1]){
-            	pscore = pscore + counter;
-            	counter =0;
-            	
-            }else{
-            	Toast.makeText(this, "Wrong Answer", Toast.LENGTH_LONG).show();
-            	counter= counter +10;
-            	
-            }
-            
-break;
+			stopwatch.setBase(SystemClock.elapsedRealtime());
+			temp = 0;
+			stopwatch.stop();
+			String tempmovie = etmovie.getText().toString();
+			String tempkeywords = etmovie.getText().toString();
+			if (tempmovie == movieanswer[1]
+					&& tempkeywords == keywordsanswer[1]) {
+				pscore = pscore + counter;
+				counter = 0;
+				tvcurrentscore.setText("Current Score - " + pscore);
+				Log.d("answer", "True");
+				Toast.makeText(this, "Correct Answer", Toast.LENGTH_LONG)
+						.show();
+			} else {
+				Toast.makeText(this, "Wrong Answer", Toast.LENGTH_LONG).show();
+				counter = counter + 10;
+				Log.d("answer", "False");
+			}
+
+			break;
 		}
 	}
+
 	@Override
 	public void onDestroy() {
 

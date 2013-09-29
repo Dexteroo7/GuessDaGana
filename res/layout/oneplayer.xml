@@ -27,7 +27,14 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:text="Chronometer" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvcurrentscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Score :-" />
 
     <EditText
         android:id="@+id/etmovie"
