@@ -26,6 +26,10 @@
             android:name="com.example.hackathon.OnePlayer"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.hackathon.LeaderBoard"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

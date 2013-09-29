@@ -1,8 +1,10 @@
 package com.example.hackathon;
 
+import java.math.BigDecimal;
+
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -16,6 +18,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.shephertz.app42.paas.sdk.android.ServiceAPI;
+import com.shephertz.app42.paas.sdk.android.game.Game;
+import com.shephertz.app42.paas.sdk.android.game.ScoreBoardService;
 
 public class OnePlayer extends Activity implements OnClickListener {
 
@@ -35,11 +41,13 @@ public class OnePlayer extends Activity implements OnClickListener {
 
 	String[] keywordsanswer = { "none", "Daggabazz Re",
 			"Give Me Some Sunshine", "Tu Jaane Na", "Tum Se Hi", "Tu Hi Mera" };
-int random = 1;
+	int random = 1;
 	int counter = 0;
 	int countup = 0;
 	long temp = 0;
 	int pscore = 0;
+	private final String YOUR_API_KEY = "3e64a1d1a501cf90ca981ecd2dd4453af4ec4e0309c2746ce75ece53e9e508e3";
+	private final String YOUR_SECRET_KEY = "069a4ad07ff72efc47617855da24ada4df1baa3f07baa0a068beefe8e8db1f67";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +101,7 @@ int random = 1;
 			break;
 
 		case R.id.bsubmit:
-			
-			
+
 			String tempmovie = etmovie.getText().toString();
 			String tempkeywords = ettrack.getText().toString();
 			if (tempmovie.equals(movieanswer[random])
@@ -107,31 +114,53 @@ int random = 1;
 				Toast.makeText(this, "Correct Answer", Toast.LENGTH_LONG)
 						.show();
 				random++;
-				switch (random){
-					
-					case 2:
-				oursong = MediaPlayer.create(this,R.drawable.idiots3_givemesomesunshine );
-				break;
-					case 3:
-						oursong = MediaPlayer.create(this,R.drawable.apgk_tujaanena );
-						break;
-					case 4:
-						oursong = MediaPlayer.create(this,R.drawable.jabwemet_tumsehi);
-						break;
-					case 5:
-						oursong = MediaPlayer.create(this,R.drawable.jannat2_tuhimera );
-						break;
-			} 
-			}else {
+				switch (random) {
+
+				case 2:
+					oursong = MediaPlayer.create(this,
+							R.drawable.idiots3_givemesomesunshine);
+					break;
+				case 3:
+					oursong = MediaPlayer.create(this,
+							R.drawable.apgk_tujaanena);
+					break;
+				case 4:
+					oursong = MediaPlayer.create(this,
+							R.drawable.jabwemet_tumsehi);
+					break;
+				case 5:
+					oursong = MediaPlayer.create(this,
+							R.drawable.jannat2_tuhimera);
+
+					Toast.makeText(this, "GameOver", Toast.LENGTH_LONG).show();
+
+					Saveuserdata();
+					Intent i = new Intent(this, LeaderBoard.class);
+					startActivity(i);
+					break;
+				}
+			} else {
 				Toast.makeText(this, "Wrong Answer ", Toast.LENGTH_LONG).show();
 				Log.d(tempmovie, tempmovie);
-				Log.d(tempkeywords,tempkeywords);
+				Log.d(tempkeywords, tempkeywords);
 				temp = temp - 10;
 				Log.d("answer", "False");
 			}
 
 			break;
 		}
+	}
+
+	private void Saveuserdata() {
+		// TODO Auto-generated method stub
+		String gameName = "GuessTheGanna";
+		String gameUserName = MainActivity.username;
+		BigDecimal gameScore = BigDecimal.valueOf(pscore);
+		ServiceAPI api = new ServiceAPI(YOUR_API_KEY, YOUR_SECRET_KEY);
+		ScoreBoardService scoreBoardService = api.buildScoreBoardService();
+		Game game = scoreBoardService.saveUserScore(gameName, gameUserName,
+				gameScore);
+		String jsonResponse = game.toString();
 	}
 
 	@Override
