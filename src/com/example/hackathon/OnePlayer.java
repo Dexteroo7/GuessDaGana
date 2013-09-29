@@ -28,7 +28,7 @@ public class OnePlayer extends Activity implements OnClickListener {
 	int counter = 0;
 	int countup = 0;
 	long temp = 0;
-int 1pscore = 0;
+int pscore = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -84,6 +84,13 @@ int 1pscore = 0;
             stopwatch.setBase(SystemClock.elapsedRealtime());
             temp = 0;
             stopwatch.stop();
+            String tempmovie = etmovie.getText().toString();
+            String tempkeywords = etmovie.getText().toString();
+            if(tempmovie == movieanswer[1] && tempkeywords == keywordsanswer[1]){
+            	
+            	
+            }
+            
 break;
 		}
 	}

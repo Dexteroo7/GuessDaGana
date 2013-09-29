@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             emailID = inputEmailID.getText().toString();
                             CreateUser createUser = new CreateUser(username, password, emailID);
                             createUser.run();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            SharedPreferences.Editor editor = sp.edit();
                             editor.putBoolean(hasAccount, true);    //to true
                             editor.commit();
                             editor.putString("UserName", username);   //
@@ -89,8 +89,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
             Log.v("Ayush", "GG");
-            username = sharedPreferences.getString("UserName", "error");
-            password = sharedPreferences.getString("Password", "error");
+            username = sp.getString("UserName", "error");
+            password = sp.getString("Password", "error");
 
             if(password.equals("error") || username.equals("error")) {} //TODO
 
@@ -124,8 +124,8 @@ public class MainActivity extends Activity implements OnClickListener {
             builder.show();
         } else {
 
-            username = sharedPreferences.getString("UserName", "error");
-            password = sharedPreferences.getString("Password", "error");
+            username = sp.getString("UserName", "error");
+            password = sp.getString("Password", "error");
         }
 
         super.onCreate(savedInstanceState);
