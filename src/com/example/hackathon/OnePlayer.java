@@ -23,23 +23,29 @@ public class OnePlayer extends Activity implements OnClickListener{
 	Chronometer stopwatch;
 	int counter=0;
 	int countup =0;
+	String[] movieanswer = new String[10];
+	String[] keywordsanswer = new String[10];
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.oneplayer);
-		oursong = MediaPlayer.create(this, R.raw.preview);
+		oursong = MediaPlayer.create(this, R.drawable.dabbang2_daggabazz_re);
 		ivsong = (ImageView) findViewById(R.id.iVmusic);
 		bsubmit = (Button) findViewById(R.id.bsubmit);
 		etmovie = (EditText) findViewById(R.id.etmovie);
 		ettrack = (EditText) findViewById(R.id.ettrack);
 		tvtimer = (TextView) findViewById(R.id.tvtimer);
 		stopwatch = (Chronometer) findViewById(R.id.chrono1);
+		movieanswer[1] = "Dabbang2";
+		keywordsanswer[1] = "Daggabaaz Re";
+		
+		
 		stopwatch.setOnChronometerTickListener(new OnChronometerTickListener(){
             @Override
             public void onChronometerTick(Chronometer arg0) {
             	
-                countup = (int) ((SystemClock.elapsedRealtime() - arg0.getBase() + counter) / 1000);
+                countup = (int) ((SystemClock.elapsedRealtime() - arg0.getBase()) / 1000);
                 String asText = (countup / 60) + ":" + (countup % 60); 
                 tvtimer.setText("Time Elapsed :- " + asText);
             }
@@ -52,7 +58,6 @@ public class OnePlayer extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
-        long temp = stopwatch.getBase();
 		switch(v.getId()){
 		
 		case R.id.iVmusic:
@@ -60,19 +65,18 @@ public class OnePlayer extends Activity implements OnClickListener{
 
                 oursong.pause();
                 stopwatch.stop();
-                temp = SystemClock.elapsedRealtime() - stopwatch.getBase();
+                counter = counter + countup;
 			}else{
 
-                stopwatch.setBase(temp);
+                stopwatch.setBase(SystemClock.elapsedRealtime()- counter*1000);
 				oursong.start();
 				stopwatch.start();
+				
 			}
 			break;
 			
 		case R.id.bsubmit:
 
-            oursong.stop();
-            stopwatch.stop();
 			break;
 		}
 		
