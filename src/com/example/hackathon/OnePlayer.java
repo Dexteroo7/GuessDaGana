@@ -12,6 +12,7 @@ import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class OnePlayer extends Activity implements OnClickListener {
 
@@ -87,7 +88,12 @@ int pscore = 0;
             String tempmovie = etmovie.getText().toString();
             String tempkeywords = etmovie.getText().toString();
             if(tempmovie == movieanswer[1] && tempkeywords == keywordsanswer[1]){
+            	pscore = pscore + counter;
+            	counter =0;
             	
+            }else{
+            	Toast.makeText(this, "Wrong Answer", Toast.LENGTH_LONG).show();
+            	counter= counter +10;
             	
             }
             

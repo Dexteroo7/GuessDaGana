@@ -67,11 +67,9 @@ public class MainActivity extends Activity implements OnClickListener {
                             createUser.run();
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putBoolean(hasAccount, true);    //to true
-                            editor.commit();
+                            
                             editor.putString("UserName", username);   //
-                            editor.commit();
                             editor.putString("Password", password);   //
-                            editor.commit();
                             editor.putString("EmailId", emailID);
                             editor.commit();
                         }
@@ -108,7 +106,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 public void onClick(DialogInterface dialog, int which) {
 
                     if(password.equals(inputPassword.getText().toString())) {
-
                         Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_SHORT);
                         dialog.dismiss();
                     }
