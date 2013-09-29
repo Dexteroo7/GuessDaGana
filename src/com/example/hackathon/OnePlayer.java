@@ -1,6 +1,8 @@
 package com.example.hackathon;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -33,7 +35,7 @@ public class OnePlayer extends Activity implements OnClickListener {
 
 	String[] keywordsanswer = { "none", "Daggabazz Re",
 			"Give Me Some Sunshine", "Tu Jaane Na", "Tum Se Hi", "Tu Hi Mera" };
-
+int random = 1;
 	int counter = 0;
 	int countup = 0;
 	long temp = 0;
@@ -91,22 +93,40 @@ public class OnePlayer extends Activity implements OnClickListener {
 			break;
 
 		case R.id.bsubmit:
-			stopwatch.setBase(SystemClock.elapsedRealtime());
-			temp = 0;
-			stopwatch.stop();
+			
+			
 			String tempmovie = etmovie.getText().toString();
-			String tempkeywords = etmovie.getText().toString();
-			if (tempmovie == movieanswer[1]
-					&& tempkeywords == keywordsanswer[1]) {
+			String tempkeywords = ettrack.getText().toString();
+			if (tempmovie.equals(movieanswer[random])
+					&& tempkeywords.equals(keywordsanswer[random])) {
 				pscore = pscore + counter;
 				counter = 0;
+				temp = 0;
 				tvcurrentscore.setText("Current Score - " + pscore);
 				Log.d("answer", "True");
 				Toast.makeText(this, "Correct Answer", Toast.LENGTH_LONG)
 						.show();
-			} else {
-				Toast.makeText(this, "Wrong Answer", Toast.LENGTH_LONG).show();
-				counter = counter + 10;
+				random++;
+				switch (random){
+					
+					case 2:
+				oursong = MediaPlayer.create(this,R.drawable.idiots3_givemesomesunshine );
+				break;
+					case 3:
+						oursong = MediaPlayer.create(this,R.drawable.apgk_tujaanena );
+						break;
+					case 4:
+						oursong = MediaPlayer.create(this,R.drawable.jabwemet_tumsehi);
+						break;
+					case 5:
+						oursong = MediaPlayer.create(this,R.drawable.jannat2_tuhimera );
+						break;
+			} 
+			}else {
+				Toast.makeText(this, "Wrong Answer ", Toast.LENGTH_LONG).show();
+				Log.d(tempmovie, tempmovie);
+				Log.d(tempkeywords,tempkeywords);
+				temp = temp - 10;
 				Log.d("answer", "False");
 			}
 
