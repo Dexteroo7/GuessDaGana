@@ -24,11 +24,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private String isLoggedIn = "Login";
     private String hasAccount = "Account";
     private String password= "", username = "", emailID="";
+    SharedPreferences sp;
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean account = sharedPreferences.getBoolean("Account", false), login = sharedPreferences.getBoolean("Login", false);
+    	sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        boolean account = sp.getBoolean("Account", false), login = sp.getBoolean("Login", false);
 
         if(account == false) {
 
