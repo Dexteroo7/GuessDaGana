@@ -13,18 +13,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class OnePlayer extends Activity implements OnClickListener{
+public class OnePlayer extends Activity implements OnClickListener {
 
 	Button bsubmit;
-	EditText etmovie,ettrack;
+	EditText etmovie, ettrack;
 	ImageView ivsong;
 	MediaPlayer oursong;
 	TextView tvtimer;
 	Chronometer stopwatch;
-	int counter=0;
-	int countup =0;
+
 	String[] movieanswer = new String[10];
 	String[] keywordsanswer = new String[10];
+
+	int counter = 0;
+	int countup = 0;
+	long temp = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -39,21 +43,22 @@ public class OnePlayer extends Activity implements OnClickListener{
 		stopwatch = (Chronometer) findViewById(R.id.chrono1);
 		movieanswer[1] = "Dabbang2";
 		keywordsanswer[1] = "Daggabaaz Re";
-		
-		
-		stopwatch.setOnChronometerTickListener(new OnChronometerTickListener(){
-            @Override
-            public void onChronometerTick(Chronometer arg0) {
-            	
-                countup = (int) ((SystemClock.elapsedRealtime() - arg0.getBase()) / 1000);
-                String asText = (countup / 60) + ":" + (countup % 60); 
-                tvtimer.setText("Time Elapsed :- " + asText);
-            }
-        });
-		
+
+		stopwatch.setOnChronometerTickListener(new OnChronometerTickListener() {
+			@Override
+			public void onChronometerTick(Chronometer arg0) {
+
+				countup = (int) ((SystemClock.elapsedRealtime() - arg0
+						.getBase()) / 1000);
+				String asText = (countup / 60) + ":" + (countup % 60);
+				tvtimer.setText("Time Elapsed :- " + asText);
+			}
+		});
+
 		bsubmit.setOnClickListener(this);
 		ivsong.setOnClickListener(this);
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -64,24 +69,52 @@ public class OnePlayer extends Activity implements OnClickListener{
 			if(oursong.isPlaying()){
 
                 oursong.pause();
+                temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
                 stopwatch.stop();
                 counter = counter + countup;
-			}else{
-
-                stopwatch.setBase(SystemClock.elapsedRealtime()- counter*1000);
+			}else
 				oursong.start();
+                stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
 				stopwatch.start();
 				
-			}
+			
 			break;
 			
 		case R.id.bsubmit:
-
-			break;
+            stopwatch.setBase(SystemClock.elapsedRealtime());
+            temp = 0;
+            stopwatch.stop();
+break;
 		}
-		
 	}
-	
-	
+	@Override
+	public void onDestroy() {
+
+		stopwatch.stop();
+		oursong.stop();
+		super.onDestroy();
+	}
+
+	@Override
+	public void onPause() {
+
+		if (temp > 0 || oursong.isPlaying()) {
+			oursong.pause();
+			temp = stopwatch.getBase() - SystemClock.elapsedRealtime();
+			stopwatch.stop();
+		}
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+
+		if (temp > 0) {
+			oursong.start();
+			stopwatch.setBase(SystemClock.elapsedRealtime() + temp);
+			stopwatch.start();
+		}
+		super.onResume();
+	}
 
 }
