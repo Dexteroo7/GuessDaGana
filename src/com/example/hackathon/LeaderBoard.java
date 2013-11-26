@@ -8,7 +8,6 @@ import com.shephertz.app42.paas.sdk.android.ServiceAPI;
 import com.shephertz.app42.paas.sdk.android.game.Game;
 import com.shephertz.app42.paas.sdk.android.game.ScoreBoardService;
 
-// Commit Worked
 public class LeaderBoard extends Activity {
 
 	private final String YOUR_API_KEY = "3e64a1d1a501cf90ca981ecd2dd4453af4ec4e0309c2746ce75ece53e9e508e3";
