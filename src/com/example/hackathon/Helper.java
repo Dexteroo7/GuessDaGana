@@ -20,6 +20,8 @@ import android.util.Log;
 public class Helper {
 	static ArrayList<String> artistlisting = new ArrayList<String>();
 	static ArrayList<String> tracklisting = new ArrayList<String>();
+	static ArrayList<String> Tracknamelisting = new ArrayList<String>();
+	static ArrayList<Song> Songlisting = new ArrayList<Song>();
 	static HttpClient client=new DefaultHttpClient();
 	
 	public static ArrayList<String> getartistlisting(int genreid) throws ClientProtocolException, IOException, JSONException{
@@ -59,7 +61,7 @@ for(i=0;i<jsonArray.length();i++){
 		
 	}
 
-	public static ArrayList<String> gettracklisting(String[] arg0, String artistid) throws ClientProtocolException, IOException, JSONException {
+	public static ArrayList<Song> gettracklisting(String[] arg0, String artistid) throws ClientProtocolException, IOException, JSONException {
 		// TODO Auto-generated method stub
 		JSONArray	jsonArray= new JSONArray();
 		JSONObject object;	
@@ -83,15 +85,13 @@ for(i=0;i<jsonArray.length();i++){
 	int i=0;
 	for(i=0;i<jsonArray.length();i++){
 		object = jsonArray.getJSONObject(i);
-		tracklisting.add(object.getString("track_id"));
-		
-		
-		
+		Song s = new Song(Integer.parseInt(object.getString("track_id")), object.getString("track_title"),Integer.parseInt( object.getString("album_id")), object.getString("album_title"));
+		Songlisting.add(s);
 		
 	}	
 	}
 	
-	return tracklisting;
+	return Songlisting;
 
 	}
 
