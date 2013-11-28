@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ArrayList<Song> Tracklisting = new ArrayList<Song>();
 	ArrayList<String> Wronganswers = new ArrayList<String>();
 	TextView tvtest;
-
+ArrayList<Integer> alreadyselected = new ArrayList<Integer>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -53,14 +53,22 @@ public class MainActivity extends Activity implements OnClickListener {
 				artistlisting = Helper.getartistlisting(Integer
 						.parseInt(arg0[0]));
 				int number = (int) ((int) 10 * Math.random());
+				alreadyselected.add(number);
 				ArrayList<Song> RawTracklisting = new ArrayList<Song>();
 				RawTracklisting = Helper.gettracklisting(arg0,
 						artistlisting.get(number));
 				
-				number = (int) ((int) 10 * Math.random());
+				
+				while(alreadyselected.contains(number)){
+					number = (int) ((int) 10 * Math.random());
+				
+				}
 				RawTracklisting.addAll(Helper.gettracklisting(arg0,
 						artistlisting.get(number)));
-				number = (int) ((int) 10 * Math.random());
+				while(alreadyselected.contains(number)){
+							number = (int) ((int) 10 * Math.random());
+							
+						}
 				RawTracklisting.addAll(Helper.gettracklisting(arg0,
 						artistlisting.get(number)));
 				int i = 0;
@@ -73,7 +81,7 @@ public class MainActivity extends Activity implements OnClickListener {
 						i--;
 					}
 					for(i=0;i<RawTracklisting.size();i++){
-						if(!(Tracklisting.contains(RawTracklisting.get(i)))&&!(Wronganswers.contains(RawTracklisting.get(i)))){
+						if(!(Tracklisting.contains(RawTracklisting.get(i)))&&!(Wronganswers.contains(RawTracklisting.get(i).gettracktitle()))){
 							Wronganswers.add(RawTracklisting.get(i).gettracktitle());
 							
 						}
